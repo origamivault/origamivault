@@ -1,8 +1,6 @@
-# Secret QR code generator with encryption and decription mechanism
+# QR code generator for your secrets
 
-[A simple web app](https://declegacy.github.io/secretqr/) to encrypt text messages and share them securely via QR codes.
-
-https://declegacy.github.io/secretqr/
+[A simple web app](https://declegacy.github.io/secretqr/) to encrypt & decrypt text messages and share them securely via QR codes.
 
 ## How It Works
 
