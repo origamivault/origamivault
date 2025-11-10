@@ -1,6 +1,12 @@
-# QR code generator for your secrets
+# OrigamyVault - encrypted paper storage via QR codes
 
-[A simple web app](https://declegacy.github.io/origamivault/) to encrypt & decrypt text messages and share them securely via QR codes.
+[A simple web app](https://declegacy.github.io/origamivault/) for encrypting and decrypting sensitive data using AES, and storing it with QR code technology on the paper. With this stragegy, nothing is ever stored online.
+
+## Sample Usage
+
+Safely store your encrypted passwords or recovery keys in a drawer, ensuring that no one with physical access can retrieve your sensitive information.
+
+You can share the encryption password and the location of the paper storage with someone you trust, giving them the option to retrieve your sensitive data in case of death or emergency.
 
 ## How It Works
 
@@ -18,6 +24,7 @@
 ## Redundancy
 
 This app is mirrored across multiple platforms for reliability:
+
 - **GitHub**: https://github.com/declegacy/origamivault
 - **GitLab**: https://gitlab.com/declegacy/origamivault
 
