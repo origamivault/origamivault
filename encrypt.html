@@ -161,7 +161,7 @@
         .qr-item {
             flex: 1;
             min-width: 280px;
-            max-width: 350px;
+            max-width: 100%;
             text-align: center;
         }
 
@@ -351,10 +351,13 @@
                         <div class="qr-label">1. Decrypt App Link</div>
                         <div id="qrLinkContainer"></div>
                         <div class="qr-description">
-                            Scan with your phone camera to open the online decryptor in your web browser: ${decryptUrl}. <br/>
-                            Alternatively, the full source code is also available on Github & GitLab: <br/>
-                            https://github.com/declegacy/origamivault <br/>
-                            https://gitlab.com/declegacy/origamivault
+                            Scan code with your phone camera to open decriptor on this url: ${decryptUrl}. <br/>
+                            
+                            <div style="margin-top: 10px; font-size: 90%">
+                                Alternatively, the full source code is also available on Github & GitLab: <br/>
+                                https://github.com/declegacy/origamivault <br/>
+                                https://gitlab.com/declegacy/origamivault
+                            </div>
                         </div>
                     </div>
 
