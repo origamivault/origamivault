@@ -179,7 +179,7 @@
             line-height: 1.4;
         }
 
-        .explanation {
+        .explanation, .info-text {
             margin-top: 25px;
             padding: 15px;
             background: #f1ebda;
@@ -240,7 +240,15 @@
             @page {
                 size: portrait;
             }
+
+            .dont-print {
+                display: none;
+            }
+
             .print-button {
+                display: none;
+            }
+            .decrypt-link-box {
                 display: none;
             }
             .qr-title {
@@ -340,19 +348,30 @@
 
                 <div class="qr-container">
                     <div class="qr-item">
-                        <div class="qr-label">1. Decrypt Link</div>
+                        <div class="qr-label">1. Decrypt APP Link</div>
                         <div id="qrLinkContainer"></div>
-                        <div class="qr-description">Scan to open decryptor in your web browser: ${decryptUrl}</div>
+                        <div class="qr-description">
+                            Scan with your phone camera to open online decryptor in your web browser: ${decryptUrl}. <br/>
+                            Alternatively, full source code is also available on GitLab: https://gitlab.com/declegacy/origamivault
+                        </div>
                     </div>
 
                     <div class="qr-item">
                         <div class="qr-label">2. Encrypted Data</div>
                         <div id="qrDataContainer"></div>
-                        <div class="qr-description">Scan on decrypt page</div>
+                        <div class="qr-description">Scan this code on decrypt web app</div>
                     </div>
                 </div>
 
                 <button class="print-button" onclick="window.print()">Print QR Codes</button>
+
+                <div class="decrypt-link-box" style="text-align: center; margin-top: 15px;">
+                    <a href="${decryptUrl}" target="_blank" style="color: #745530; text-decoration: none; font-weight: 500; font-size: 14px;">Open decrypt page in new tab →</a>
+                </div>
+
+                <div class="info-text dont-print">
+                    Feel free to save decryption app (press Ctrl+S or Cmd+S on <a href="decrypt.html">decrypt.html</a>). HTML and Javascript works well without server side hosting. With the saved app, you will be able to decrypt content even if GitHub is offline. Alternatively, you can fork/clone the entire app.
+                </div>
             `;
             qrcodeDiv.style.display = 'block';
 

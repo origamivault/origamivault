@@ -15,6 +15,14 @@
 - 🚀 No server required - runs entirely in the browser
 - 🔐 Password-protected decryption
 
+## Redundancy
+
+This app is mirrored across multiple platforms for reliability:
+- **GitHub**: https://github.com/declegacy/origamivault
+- **GitLab**: https://gitlab.com/declegacy/origamivault
+
+You can also save the app locally (Ctrl+S or Cmd+S) to decrypt content even when both platforms are offline.
+
 ## Usage
 
 Simply open `index.html` in your web browser or visit the live app at: https://declegacy.github.io/origamivault/
