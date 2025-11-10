@@ -1,4 +1,4 @@
-# OrigamyVault - encrypted paper storage via QR codes
+# OrigamiVault - encrypted paper storage via QR codes
 
 [A simple web app](https://declegacy.github.io/origamivault/) for encrypting and decrypting sensitive data using AES, and storing it with QR code technology on the paper. With this stragegy, nothing is ever stored online.
 
