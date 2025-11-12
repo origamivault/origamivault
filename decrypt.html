@@ -27,7 +27,7 @@
             background: white;
             border-radius: 16px;
             padding: 40px;
-            max-width: 600px;
+            max-width: 650px;
             width: 100%;
             box-shadow: 0 20px 60px rgba(116, 85, 48, 0.2);
         }
@@ -122,6 +122,22 @@
             display: none;
         }
 
+        .result.glow-animation {
+            animation: greenGlow 4s ease-in-out;
+        }
+
+        @keyframes greenGlow {
+            0%, 100% {
+                box-shadow: 0 0 0 rgba(76, 175, 80, 0);
+            }
+            8.33%, 41.67%, 75% {
+                box-shadow: 0 0 30px rgba(76, 175, 80, 0.8);
+            }
+            16.67%, 50%, 83.33% {
+                box-shadow: 0 0 0 rgba(76, 175, 80, 0);
+            }
+        }
+
         .result h3 {
             color: #745530;
             margin-bottom: 10px;
@@ -131,6 +147,28 @@
             color: #745530;
             line-height: 1.6;
             word-wrap: break-word;
+        }
+
+        .result code {
+            color: #745530;
+            line-height: 1.6;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            font-family: inherit;
+        }
+
+        .explanation {
+            padding: 15px;
+            background: #f1ebda;
+            border-radius: 8px;
+            color: #745530;
+            font-size: 14px;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .explanation strong {
+            color: #745530;
         }
 
         .error {
@@ -144,12 +182,12 @@
         }
 
         .success {
-            background: #f1ebda;
-            border-left: 4px solid #d5b882;
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
             padding: 15px;
             margin: 10px 0;
             border-radius: 4px;
-            color: #745530;
+            color: #2e7d32;
             display: none;
         }
 
@@ -215,7 +253,12 @@
         </div>
         <div class="subtitle"><b>OrigamiVault</b> - non-digital encrypted storage</div>
         <h1>Decrypt Content</h1>
-        <p style="text-align: center; color: #745530; margin-bottom: 20px; font-size: 14px;">Scan QR code with encrypted data (second/bigger code)</p>
+
+        <div class="explanation" id="securityTip" style="margin-bottom: 20px;">
+            <strong>Security tip:</strong> For better security, turn off internet and use incognito browser mode.
+        </div>
+
+        <p id="scanInstruction" style="text-align: center; color: #745530; margin-bottom: 20px; font-size: 14px;">Scan QR code with encrypted data (second/bigger code)</p>
 
         <div id="scannerSection">
             <button onclick="startScanner()">Start QR Code Scanner</button>
@@ -236,7 +279,7 @@
         <div class="success" id="successMsg" style="display:none">Decryption has been successfully completed!</div>
 
         <div class="result" id="result">
-            <p id="decryptedContent"></p>
+            <code id="decryptedContent"></code>
         </div>
 
         <div class="link" id="encryptLink">
@@ -260,11 +303,13 @@
             // Hide start button
             document.querySelector('button[onclick="startScanner()"]').style.display = 'none';
 
-            // Hide logo and subtitle when scanning
+            // Hide logo, subtitle, and security tip when scanning
             const logoContainer = document.querySelector('.logo-container');
             const subtitle = document.querySelector('.subtitle');
+            const securityTip = document.getElementById('securityTip');
             if (logoContainer) logoContainer.style.display = 'none';
             if (subtitle) subtitle.style.display = 'none';
+            if (securityTip) securityTip.style.display = 'none';
 
             hideMessages();
 
@@ -293,14 +338,19 @@
                     document.getElementById('reader').style.display = 'none';
                     document.getElementById('stopBtn').style.display = 'none';
 
-                    // Show start button again
-                    document.querySelector('button[onclick="startScanner()"]').style.display = 'block';
+                    // Only show start button, logo, subtitle, and security tip if password section is not displayed
+                    const passwordSection = document.getElementById('passwordSection');
+                    if (passwordSection.style.display !== 'block') {
+                        document.querySelector('button[onclick="startScanner()"]').style.display = 'block';
 
-                    // Show logo and subtitle again
-                    const logoContainer = document.querySelector('.logo-container');
-                    const subtitle = document.querySelector('.subtitle');
-                    if (logoContainer) logoContainer.style.display = 'block';
-                    if (subtitle) subtitle.style.display = 'block';
+                        // Show logo, subtitle, and security tip again
+                        const logoContainer = document.querySelector('.logo-container');
+                        const subtitle = document.querySelector('.subtitle');
+                        const securityTip = document.getElementById('securityTip');
+                        if (logoContainer) logoContainer.style.display = 'block';
+                        if (subtitle) subtitle.style.display = 'block';
+                        if (securityTip) securityTip.style.display = 'block';
+                    }
                 }).catch(err => {
                     console.error(err);
                 });
@@ -318,10 +368,24 @@
                 return;
             }
 
+            // Validate version prefix (format: [OV_*])
+            if (!/^\[OV_[^\]]+\]/.test(decodedText)) {
+                stopScanner();
+                document.getElementById('errorMsg').textContent = 'Invalid QR code format. Please scan a valid OrigamiVault encrypted QR code.';
+                document.getElementById('errorMsg').style.display = 'block';
+                return;
+            }
+
             scannedData = decodedText;
             document.getElementById('encryptedData').value = decodedText;
 
             stopScanner();
+
+            // Hide the start scanner button, instruction text, security tip, and encrypt link
+            document.querySelector('button[onclick="startScanner()"]').style.display = 'none';
+            document.getElementById('scanInstruction').style.display = 'none';
+            document.getElementById('securityTip').style.display = 'none';
+            document.getElementById('encryptLink').style.display = 'none';
 
             document.getElementById('passwordSection').style.display = 'block';
             document.getElementById('password').focus();
@@ -342,13 +406,16 @@
             }
 
             try {
+                // Strip version prefix (format: [OV_*])
+                let cleanEncryptedData = encryptedData.replace(/^\[OV_[^\]]+\]/, '');
+
                 // Decrypt using Web Crypto API (AES-CBC, 128-bit)
                 // Static salt and IV (matching encrypt.html)
                 const salt = new Uint8Array(16); // All zeros
                 const iv = new Uint8Array(16); // All zeros
 
                 // Decode base64 to Uint8Array
-                const ciphertext = new Uint8Array(atob(encryptedData).split('').map(c => c.charCodeAt(0)));
+                const ciphertext = new Uint8Array(atob(cleanEncryptedData).split('').map(c => c.charCodeAt(0)));
 
                 // Derive key from password
                 const encoder = new TextEncoder();
@@ -400,7 +467,9 @@
 
                 // Display the decrypted content
                 document.getElementById('decryptedContent').textContent = decryptedText;
-                document.getElementById('result').style.display = 'block';
+                const resultDiv = document.getElementById('result');
+                resultDiv.style.display = 'block';
+                resultDiv.classList.add('glow-animation');
             } catch (error) {
                 document.getElementById('errorMsg').textContent = 'Decryption failed. Please check your password and try again.';
                 document.getElementById('errorMsg').style.display = 'block';
