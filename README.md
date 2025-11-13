@@ -1,64 +1,166 @@
-# OrigamiVault - encrypted paper storage via QR codes
+# OrigamiVault — Encrypted Paper Storage
 
-[A simple web app](https://declegacy.github.io/origamivault/) for encrypting and decrypting sensitive data using AES, and storing it with QR code technology on the paper. With this stragegy, nothing is ever stored online.
+**Offline. Secure. Printable. Recoverable.**
 
-## Sample Usage
+OrigamiVault is a tiny, offline web app for encrypting sensitive data and storing it on paper using QR codes or OCR-friendly printed code.  
+Nothing is uploaded. Nothing is stored online. Everything runs locally in your browser.
 
-Safely store your encrypted passwords or recovery keys in a drawer, ensuring that no one with physical access can retrieve your sensitive information.
+👉 **Live demo:** https://declegacy.github.io/origamivault/  
+👉 **GitHub:** https://github.com/declegacy/origamivault  
+👉 **GitLab mirror:** https://gitlab.com/declegacy/origamivault
 
-You can share the encryption password and the location of the paper storage with someone you trust, giving them the option to retrieve your sensitive data in case of death or emergency.
+Perfect for backing up **master passwords**, **crypto private keys**, **2FA seeds**, **recovery phrases**, and **emergency access information**.
 
-## How It Works
+---
 
-1. **Encrypt**: Enter your secret message and a password to generate an encrypted QR code
-2. **Share**: Share the QR code image with anyone
-3. **Decrypt**: Scan the QR code with your phone camera and enter the password to reveal the message
+## ✨ Why OrigamiVault?
 
-## Features
+Digital storage fails. Password managers break. Hard drives die. Cloud accounts lock you out.
 
-- 🔒 AES-GCM 128-bit encryption using Web Crypto API (no external dependencies)
-- 📱 QR code generation and scanning
-- 🚀 No server required - runs entirely in the browser
-- 🔐 Password-protected decryption with PBKDF2 key derivation
-- 💾 Works completely offline - no CDN dependencies for encryption
+Paper lasts for decades.
 
-## Redundancy
+OrigamiVault lets you:
 
-This app is mirrored across multiple platforms for reliability:
+- Create **encrypted**, durable paper backups
+- Store them safely in a drawer, safe, or envelope
+- Share the password + location with someone trusted (digital legacy)
+- Restore using nothing but a browser — even years later
 
-- **GitHub**: https://github.com/declegacy/origamivault
-- **GitLab**: https://gitlab.com/declegacy/origamivault
+Simple. Durable. Open-source.
 
-You can also save the app locally (Ctrl+S or Cmd+S) to decrypt content even when both platforms are offline.
+---
 
-## Usage
+## 🚀 How It Works
 
-Simply open `index.html` in your web browser or visit the live app at: https://declegacy.github.io/origamivault/
+1. **Encrypt**  
+   Enter your secret and a password. OrigamiVault encrypts it using AES-GCM.
+
+2. **Print**  
+   Choose between:
+
+   - **Encrypted QR code**, or
+   - **OCR-friendly JavaScript snippet**  
+     (contains the encrypted payload + tiny decryption logic)
+
+3. **Store**  
+   Keep the printed page somewhere safe.
+
+4. **Decrypt**
+   - Scan the QR code **or**
+   - OCR the JS snippet and paste it in a browser  
+     Then enter your password to reveal the original message.
+
+Everything runs locally. No servers involved.
+
+---
+
+## 🧾 Dual Backup Format: QR Code + OCR-Friendly Text
+
+OrigamiVault gives you **two independent long-term recovery methods**, designed for durability and future-proofing.
+
+### 1. Encrypted QR Code
+
+- Fast to scan with any phone
+- Compact and easy to print
+- Works offline
+
+### 2. Printable JavaScript Decryption Snippet
+
+OrigamiVault also prints a **self-contained JS snippet**, including:
+
+- The encrypted payload
+- A minimal decryption function
+- Instructions for restoring your secret
+
+This means your data stays recoverable even if:
+
+- QR scanners stop working
+- The print is damaged
+- Cameras can’t capture the code cleanly
+- Future technology changes formats
+
+### OCR-Optimized Typography
+
+The printed snippet uses **Azeret Mono**, one of the most OCR-accurate monospaced fonts, chosen because:
+
+- Characters are highly distinguishable
+- OCR engines read it with minimal error
+- Glyph ambiguity is minimized (0/O, l/1, etc.)
+- Prints crisply on low-quality printers
+
+This ensures that even **decades from now**, your encrypted backup remains readable and decryptable.
+
+---
+
+## 🛡 Security Overview
+
+- AES-GCM 128-bit encryption
+- Key derived with PBKDF2 (SHA-256)
+- Zero data leaves your device
+- No analytics, no tracking, no back-end
+- Fully usable offline (save `index.html`)
+- Open-source and auditable
+
+OrigamiVault **never** sends or stores your secrets anywhere.
+
+---
+
+## 📦 Features
+
+- 🔒 Strong client-side encryption
+- 📄 Printable QR and OCR backups
+- 📱 Built-in QR code scanner
+- 💻 Works completely offline
+- 🧩 Pure HTML/CSS/JavaScript
+- 🔁 Redundant mirrors on GitHub & GitLab
+- 🪶 Ideal for emergency kits and digital legacy planning
+
+---
+
+## 📘 Quick Start
 
 ### Encrypt a Message
 
-1. Open the encrypt page
-2. Enter your message
+1. Open OrigamiVault
+2. Enter your secret
 3. Choose a strong password
-4. Click "Encrypt & Generate QR Code"
-5. Share the generated QR code
+4. Select QR code or JS snippet output
+5. Save or print the result
 
 ### Decrypt a Message
 
-1. Open the decrypt page
-2. Click "Start QR Code Scanner"
-3. Scan the encrypted QR code
-4. Enter the password
-5. View your decrypted message
+**QR code:**
 
-## Technologies
+1. Open OrigamiVault
+2. Click **Start QR Scanner**
+3. Scan the code
+4. Enter your password
 
-- **Web Crypto API** for AES-GCM encryption (native browser crypto, no external library)
-- **QRCode.js** for QR code generation
-- **html5-qrcode** for camera scanning
-- Pure HTML, CSS, and JavaScript
-- **100% offline capable** - encryption/decryption works without internet
+**Printed JS snippet:**
 
-## License
+1. OCR-scan the code
+2. Paste the snippet into your browser console
+3. Enter your password
+4. Decrypt offline
 
-MIT License - feel free to use and modify as needed.
+You can save the entire app locally:
+
+**File → Save Page As…**
+
+This ensures decryption works even if GitHub and GitLab are offline.
+
+---
+
+## 🧱 Technologies Used
+
+- Web Crypto API (AES-GCM + PBKDF2)
+- QRCode.js
+- html5-qrcode
+- Azeret Mono for OCR reliability
+- Fully offline architecture
+
+---
+
+## 📝 License
+
+MIT License — free to use, modify, and redistribute.
