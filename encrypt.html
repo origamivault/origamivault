@@ -365,23 +365,6 @@
             .container {
                 box-shadow: none;
             }
-            .qr-container {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .qr-item:first-child {
-                display: flex;
-                flex-direction: row;
-                align-items: flex-start;
-                gap: 15px;
-                text-align: left;
-            }
-
-            .qr-item:first-child #qrLinkContainer {
-                flex-shrink: 0;
-                order: -1;
-            }
 
             .decrypt-js-code {
                 border: 1px solid black;
@@ -402,6 +385,27 @@
                 font-size: 12px;
                 letter-spacing: 0.05em;  /* a bit more spacing helps OCR */
                 line-height: 1.2;
+            }
+
+            .decrypt-url-box {
+                background: white !important;
+                border: 1px solid black !important;
+                padding: 15px;
+                margin-top: 15px;
+            }
+
+            .decrypt-url-box > div {
+                color: black !important;
+                border-color: black !important;
+            }
+
+            .decrypt-url-box code {
+                color: black !important;
+            }
+
+            .decrypt-url-box > div > div {
+                background: white !important;
+                border: 1px dashed black !important;
             }
         }
     </style>
@@ -515,47 +519,47 @@
 
             // Get current base URL dynamically
             const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '');
-            const decryptUrl = baseUrl + '/decrypt.html';
-
+            const decryptBaseUrl = baseUrl + '/decrypt.html'
+            const decryptUrl = decryptBaseUrl + '#' + encodeURIComponent(encrypted);
+            
             // Clear previous QR code if any
             const qrcodeDiv = document.getElementById('qrcode');
             qrcodeDiv.innerHTML = `
-                <div class="qr-title">Print these QR codes</div>
+                <div class="qr-title">Print this QR code</div>
 
                 <div class="explanation dont-print">
-                    These two QR codes are needed to decrypt the content later. Scan the first QR code to open the decrypt web app, and then scan the second QR code on that page to retrieve the encrypted data.
+                    This QR code contains your encrypted data. Scan it with your phone camera to open the decrypt page and enter your password.
                 </div>
 
                 <div class="qr-container">
-                    <div class="qr-item">
-                        <div class="qr-label dont-print">1. App Link QR Code</div>
-                        <div id="qrLinkContainer"></div>
-                        <div class="qr-description">
-                            <div class="qr-label show-print">1. Decrypt App Link</div>
-                            Scan code with your phone camera to open decriptor on this url: ${decryptUrl}. <br/>
-                            
-                            <div style="margin-top: 10px; font-size: 90%">
-                                Alternatively, the full source code is also available on: <br/>
-                                https://github.com/declegacy/origamivault <br/>
-                                https://gitlab.com/declegacy/origamivault
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="qr-item">
-                        <div class="qr-label">2. Encrypted Data QR Code</div>
-                        <div id="qrDataContainer"></div>
-                        <div class="qr-description">Scan this code on the decrypt web app</div>
-
-                        <div class="decrypt-js-code">
-                            <h3>Emergency/alternative decryption code</h3>
-                            <div class="code" onclick="navigator.clipboard.writeText(this.textContent).then(()=>{this.style.background='#4d4d4d'; setTimeout(()=>this.style.background='#2d2d2d', 200)})" title="Click to copy"><code>(async()=>{try{const p=prompt("Enter password:");if(!p)return;const c="${encryptedBase64.replace(/"/g, '\\"')}";const salt=new Uint8Array(16);const iv=new Uint8Array(16);const ciphertext=new Uint8Array(atob(c).split("").map(x=>x.charCodeAt(0)));const keyMaterial=await crypto.subtle.importKey("raw",new TextEncoder().encode(p),"PBKDF2",false,["deriveKey"]);const key=await crypto.subtle.deriveKey({name:"PBKDF2",salt:salt,iterations:100000,hash:"SHA-256"},keyMaterial,{name:"AES-CBC",length:128},false,["decrypt"]);const decrypted=await crypto.subtle.decrypt({name:"AES-CBC",iv:iv},key,ciphertext);alert(new TextDecoder().decode(decrypted))}catch(e){alert("Wrong Password")}})()</code></div>
-                            <div style="margin-top:7px; font-size: 70%; color: #745530">Works offline, executable in browser console (open it via CMD+OPTION+I or CTRL + SHIFT + I)</div>
-                        </div>
+                    <div class="qr-item" style="text-align: center;">
+                        <div class="qr-label dont-print">Encrypted Data QR Code</div>
+                        <div id="qrDataContainer" style="display: inline-block;"></div>
+                        <div class="qr-description">Scan with phone/device camera and open the URL</div>
                     </div>
                 </div>
 
-                <button class="print-button" onclick="window.print()">Print QR Codes</button>
+                <div class="decrypt-url-box" style="margin-top: 15px; padding: 15px; background: #f1ebda; border-radius: 8px; border: 1px solid #d5b882;">
+                    <div style="margin-bottom: 8px; color: #745530; font-size: 14px; font-weight: 600;">
+                        Manual Decrypt URL (if QR link does not work on your phone/device):
+                    </div>
+                    <div style="padding: 8px; background: white; border-radius: 4px; border: 1px dashed #d5b882;">
+                        <code style="font-size: 12px; color: #745530; word-break: break-all;">${decryptBaseUrl}</code>
+                    </div>
+                    <div style="margin-top: 12px; padding-top: 6px; font-size: 13px; color: #745530; line-height: 1.6;">
+                        Alternatively, the full source code is also available on:<br/>
+                        <code style="font-size: 11px;">https://github.com/declegacy/origamivault</code><br/>
+                        <code style="font-size: 11px;">https://gitlab.com/declegacy/origamivault</code>
+                    </div>
+                </div>
+
+                <div class="decrypt-js-code">
+                    <h3>Emergency/alternative decryption code</h3>
+                    <div class="code" onclick="navigator.clipboard.writeText(this.textContent).then(()=>{this.style.background='#4d4d4d'; setTimeout(()=>this.style.background='#2d2d2d', 200)})" title="Click to copy"><code>(async()=>{try{const p=prompt("Enter password:");if(!p)return;const c="${encryptedBase64.replace(/"/g, '\\"')}";const salt=new Uint8Array(16);const iv=new Uint8Array(16);const ciphertext=new Uint8Array(atob(c).split("").map(x=>x.charCodeAt(0)));const keyMaterial=await crypto.subtle.importKey("raw",new TextEncoder().encode(p),"PBKDF2",false,["deriveKey"]);const key=await crypto.subtle.deriveKey({name:"PBKDF2",salt:salt,iterations:100000,hash:"SHA-256"},keyMaterial,{name:"AES-CBC",length:128},false,["decrypt"]);const decrypted=await crypto.subtle.decrypt({name:"AES-CBC",iv:iv},key,ciphertext);alert(new TextDecoder().decode(decrypted))}catch(e){alert("Wrong Password")}})()</code></div>
+                    <div style="margin-top:7px; font-size: 70%; color: #745530">Works offline, executable in browser console (open it via CMD+OPTION+I or CTRL + SHIFT + I)</div>
+                </div>
+
+                <button class="print-button" onclick="window.print()">Print QR Code</button>
 
                 <div class="decrypt-link-box" style="text-align: center; margin-top: 15px;">
                     <a href="${decryptUrl}" target="_blank" style="color: #745530; text-decoration: none; font-weight: 500; font-size: 14px;">Open decrypt page in new tab →</a>
@@ -568,24 +572,14 @@
             `;
             qrcodeDiv.style.display = 'block';
 
-            // Generate QR code for decrypt link
-            new QRCode(document.getElementById('qrLinkContainer'), {
+            // Generate single QR code with decrypt URL + encrypted data in hash
+            new QRCode(document.getElementById('qrDataContainer'), {
                 text: decryptUrl,
-                width: 150,
-                height: 150,
+                width: 300,
+                height: 300,
                 colorDark: "#000000",
                 colorLight: "#ffffff",
                 correctLevel: QRCode.CorrectLevel.M
-            });
-
-            // Generate QR code for encrypted data
-            new QRCode(document.getElementById('qrDataContainer'), {
-                text: encrypted,
-                width: 260,
-                height: 260,
-                colorDark: "#000000",
-                colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.H
             });
         }
     </script>

@@ -258,7 +258,7 @@
 <body>
     <div class="container">
         <div class="logo-container">
-            <img src="logo.png" alt="OrigamiVault Logo" class="logo">
+            <a href="encrypt.html"><img src="logo.png" alt="OrigamiVault Logo" class="logo"></a>
         </div>
         <h1><span>OrigamiVault</span> — Encrypted Paper Storage</h1>
 
@@ -302,6 +302,24 @@
     <script>
         let html5QrCode;
         let scannedData = '';
+
+        // Check if encrypted data is in URL hash on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            const hash = window.location.hash.substring(1); // Remove the #
+            if (hash) {
+                qr_content = decodeURIComponent(hash);
+                // Encrypted data found in URL
+                document.getElementById('encryptedData').value = qr_content;
+
+                // Hide scanner section and show password input
+                document.getElementById('scannerSection').querySelector('button[onclick="startScanner()"]').style.display = 'none';
+                document.getElementById('scanInstruction').style.display = 'none';
+                document.getElementById('securityTip').style.display = 'none';
+                document.getElementById('encryptLink').style.display = 'none';
+                document.getElementById('passwordSection').style.display = 'block';
+                document.getElementById('password').focus();
+            }
+        });
 
         function startScanner() {
             const readerDiv = document.getElementById('reader');
@@ -366,26 +384,23 @@
         }
 
         function onScanSuccess(decodedText, decodedResult) {
-            // Check if the scanned QR code is a URL (decrypt link)
-            // This checks if it's a URL pattern rather than encrypted data
-            const urlPattern = /^https?:\/\//i;
-            if (urlPattern.test(decodedText) && decodedText.toLowerCase().includes('decrypt')) {
-                stopScanner();
-                document.getElementById('errorMsg').textContent = 'You scanned QR Code #1 (Decrypt Link). Please scan QR Code #2 (Encrypted Data) instead.';
-                document.getElementById('errorMsg').style.display = 'block';
-                return;
+            // Check if the scanned QR code is a URL with hash
+            let extractedData = decodedText;
+            const hashIndex = decodedText.indexOf('#');
+            if (hashIndex !== -1) {
+                extractedData = decodeURIComponent(decodedText.substring(hashIndex + 1));
             }
 
             // Validate version prefix (format: [OV_*])
-            if (!/^\[OV_[^\]]+\]/.test(decodedText)) {
+            if (!/^\[OV_[^\]]+\]/.test(extractedData)) {
                 stopScanner();
                 document.getElementById('errorMsg').textContent = 'Invalid QR code format. Please scan a valid OrigamiVault encrypted QR code.';
                 document.getElementById('errorMsg').style.display = 'block';
                 return;
             }
 
-            scannedData = decodedText;
-            document.getElementById('encryptedData').value = decodedText;
+            scannedData = extractedData;
+            document.getElementById('encryptedData').value = extractedData;
 
             stopScanner();
 
