@@ -33,6 +33,7 @@ OrigamiVault lets you:
 - Store them safely in a drawer, safe, or envelope
 - Share the password + location with someone trusted (digital legacy)
 - Restore using nothing but a browser — even years later
+- Fork this repository, turn on GitHub Pages hosting (deploy via `main` branch) and make it 100% yours
 
 Simple. Durable. Open-source.
 
