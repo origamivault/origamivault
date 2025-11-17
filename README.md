@@ -106,7 +106,7 @@ This ensures that even **decades from now**, your encrypted backup remains reada
 - Key derived with PBKDF2 (SHA-256)
 - Zero data leaves your device
 - No analytics, no tracking, no back-end
-- Fully usable offline (save `index.html`)
+- Fully usable offline via JavaScript snippet (or save `decrypt.html`)
 - Open-source and auditable
 
 OrigamiVault **never** sends or stores your secrets anywhere.
