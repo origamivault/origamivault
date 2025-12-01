@@ -178,6 +178,7 @@ MIT License — free to use, modify, and redistribute.
 
 ## Contributors
 
-![@knagode](https://github.com/knagode)
-![@shollyethan](https://github.com/shollyethan)
-![https://github.com/selfhst](https://github.com/selfhst)
+[@knagode](https://github.com/knagode)
+[@Dalewn](https://github.com/Dalewn)
+[@shollyethan](https://github.com/shollyethan)
+[@selfhst](https://github.com/selfhst)
