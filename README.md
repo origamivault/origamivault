@@ -2,7 +2,7 @@
 
 **“Like writing your secret (e.g. master password) on paper — but only your loved ones can read it in case of emergency or death.”**
 
-OrigamiVault is a tiny offline web app for **encrypting or splitting secrets** and printing them as **QR codes** and **OCR-friendly recovery JavasScript**. 
+OrigamiVault is a tiny offline web app for **encrypting or splitting secrets** and printing them as **QR codes** and **OCR-friendly recovery JavaScript**. 
 
 👉 **Live app:** https://origamivault.github.io/origamivault/  
 👉 **Video demo:** https://www.youtube.com/watch?v=zzQkq5Qjri8  
