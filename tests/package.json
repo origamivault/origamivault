@@ -1,0 +1,23 @@
+{
+  "name": "qrencrypt",
+  "version": "1.0.0",
+  "description": "**“Like writing your secret (e.g. master password) on paper — but only your loved ones can read it in case of emergency or death.”**",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/origamivault/origamivault.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/origamivault/origamivault/issues"
+  },
+  "homepage": "https://github.com/origamivault/origamivault#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.57.0"
+  }
+}
